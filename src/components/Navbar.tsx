@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useApp } from '../context/AppContext';
 import { TabType, LanguageCode } from '../types';
 import { ClubLogo } from './ClubLogo';
-import { InstallAppModal } from './InstallAppModal';
 import { 
   Trophy, 
   Newspaper, 
@@ -11,12 +10,10 @@ import {
   Settings, 
   Moon, 
   Sun, 
-  PlusCircle,
-  Smartphone
+  PlusCircle
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const [showInstallModal, setShowInstallModal] = useState(false);
   const { 
     currentTab, 
     setCurrentTab, 
@@ -62,7 +59,7 @@ export const Navbar: React.FC = () => {
                 لاوانی ئاگرین
               </span>
               <span className="text-[10px] text-amber-400/90 font-bold tracking-wider leading-tight">
-                LAWANI AGRIN • 2018
+                2018 دامەزراوە
               </span>
             </div>
           </button>
@@ -105,16 +102,6 @@ export const Navbar: React.FC = () => {
                 <span className="hidden sm:inline">{t('add')}</span>
               </button>
             )}
-
-            {/* Install App Button */}
-            <button
-              onClick={() => setShowInstallModal(true)}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 text-xs font-black shadow-md shadow-amber-500/20 transition-all hover:scale-105 active:scale-95 cursor-pointer ring-2 ring-amber-400/40 animate-pulse"
-              title="کردن بە ئەپی فەرمی مۆبایل"
-            >
-              <Smartphone className="w-3.5 h-3.5" />
-              <span className="text-[11px] sm:text-xs">ئەپەکە دابەزێنە 📲</span>
-            </button>
 
             {/* Language Switcher */}
             <div className="flex items-center bg-zinc-800/60 rounded-xl p-1 border border-zinc-700/50">
@@ -165,11 +152,6 @@ export const Navbar: React.FC = () => {
           })}
         </div>
       </div>
-
-      <InstallAppModal 
-        isOpen={showInstallModal} 
-        onClose={() => setShowInstallModal(false)} 
-      />
     </header>
   );
 };

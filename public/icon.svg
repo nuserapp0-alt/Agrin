@@ -1,64 +1,182 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#1f2430" />
-      <stop offset="100%" stop-color="#090d16" />
+    <!-- Background Gradient for Maskable Canvas -->
+    <radialGradient id="canvasBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#182030" />
+      <stop offset="70%" stop-color="#0d111a" />
+      <stop offset="100%" stop-color="#070a10" />
     </radialGradient>
-    <linearGradient id="goldRing" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f59e0b" />
-      <stop offset="50%" stop-color="#ea580c" />
-      <stop offset="100%" stop-color="#fde047" />
+
+    <!-- Shield / Base Glow -->
+    <radialGradient id="emblemGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#222b3d" />
+      <stop offset="85%" stop-color="#0f1420" />
+      <stop offset="100%" stop-color="#080b12" />
+    </radialGradient>
+
+    <!-- Gold Luxury Gradient -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="25%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#d97706" />
+      <stop offset="75%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#b45309" />
     </linearGradient>
-    <linearGradient id="flameOuter" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ef4444" />
-      <stop offset="50%" stop-color="#f97316" />
-      <stop offset="100%" stop-color="#f59e0b" />
+
+    <!-- Fiery Outer Wings -->
+    <linearGradient id="fireOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dc2626" />
+      <stop offset="40%" stop-color="#ea580c" />
+      <stop offset="80%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fbbf24" />
     </linearGradient>
-    <linearGradient id="flameCore" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#fef08a" />
-      <stop offset="100%" stop-color="#f97316" />
+
+    <!-- Fiery Core -->
+    <linearGradient id="fireCore" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="60%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#fef08a" />
     </linearGradient>
+
+    <!-- Ribbon Gradient -->
+    <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e2638" />
+      <stop offset="50%" stop-color="#131926" />
+      <stop offset="100%" stop-color="#0a0e17" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
   </defs>
 
-  <!-- Background Base -->
-  <circle cx="100" cy="100" r="98" fill="url(#bgGlow)" />
-  <circle cx="100" cy="100" r="96" stroke="url(#goldRing)" stroke-width="4" />
-  <circle cx="100" cy="100" r="90" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 2" opacity="0.7" />
+  <!-- Full Canvas Background for Maskable Icon -->
+  <rect width="512" height="512" fill="url(#canvasBg)" />
 
-  <!-- Top Text: LAWANI AGRIN -->
-  <path id="curveTop" d="M 28 100 A 72 72 0 0 1 172 100" fill="transparent" />
-  <text font-size="11" font-weight="900" fill="#fde047" letter-spacing="2.5" text-anchor="middle">
-    <textPath href="#curveTop" startOffset="50%">LAWANI AGRIN • FC</textPath>
-  </text>
+  <!-- Main Emblem Group scaled & centered -->
+  <g transform="translate(20.48, 20.48) scale(0.92)">
+    
+    <!-- Outer Glow Aura -->
+    <circle cx="256" cy="256" r="248" fill="#f59e0b" opacity="0.12" filter="url(#glow)" />
 
-  <!-- Fiery Wings / Flame -->
-  <path d="M100 28 C115 50 135 65 130 95 C125 118 105 130 100 135 C95 130 75 118 70 95 C65 65 85 50 100 28 Z" fill="url(#flameOuter)" opacity="0.95" />
-  <path d="M100 45 C110 62 122 75 118 95 C114 112 104 120 100 124 C96 120 86 112 82 95 C78 75 90 62 100 45 Z" fill="url(#flameCore)" />
+    <!-- Outer Gold Rim -->
+    <circle cx="256" cy="256" r="244" fill="url(#emblemGlow)" stroke="url(#goldGradient)" stroke-width="12" />
+    <circle cx="256" cy="256" r="228" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="8 6" opacity="0.6" />
 
-  <!-- Ball -->
-  <g transform="translate(130, 68)">
-    <circle cx="12" cy="12" r="12" fill="#ffffff" stroke="#f59e0b" stroke-width="2" />
-    <path d="M12 4 L17 9 L15 15 L9 15 L7 9 Z" fill="#1e232d" />
-    <path d="M12 4 L12 0 M17 9 L22 8 M15 15 L18 20 M9 15 L6 20 M7 9 L2 8" stroke="#1e232d" stroke-width="1.5" />
-    <path d="M-6 8 C-1 9 4 10 7 11 C3 14 -2 15 -6 16 C-2 13 -3 10 -6 8 Z" fill="#f97316" />
+    <!-- Inner Circle Base -->
+    <circle cx="256" cy="256" r="220" fill="#0d111a" stroke="url(#goldGradient)" stroke-width="4" />
+
+    <!-- Top Arch Banner Text: LAWANI AGRIN FC -->
+    <path id="archTop" d="M 76 256 A 180 180 0 0 1 436 256" fill="transparent" />
+    <text font-family="'Cairo', 'Noto Sans', sans-serif" font-size="28" font-weight="900" fill="#fde68a" letter-spacing="4" text-anchor="middle">
+      <textPath href="#archTop" startOffset="50%">LAWANI AGRIN • FC</textPath>
+    </text>
+
+    <!-- Stars on Sides -->
+    <g fill="#fbbf24">
+      <!-- Left Star -->
+      <path d="M 72 256 L 76 264 L 84 265 L 78 271 L 80 279 L 72 274 L 64 279 L 66 271 L 60 265 L 68 264 Z" transform="scale(0.8) translate(10, 50)" />
+      <!-- Right Star -->
+      <path d="M 440 256 L 444 264 L 452 265 L 446 271 L 448 279 L 440 274 L 432 279 L 434 271 L 428 265 L 436 264 Z" transform="scale(0.8) translate(95, 50)" />
+    </g>
+
+    <!-- Majestic Fire Wings (Center Background) -->
+    <g filter="url(#glow)">
+      <!-- Outer Flame -->
+      <path d="M 256 90 
+               C 300 145 355 190 340 260 
+               C 328 315 280 340 256 350 
+               C 232 340 184 315 172 260 
+               C 157 190 212 145 256 90 Z" 
+            fill="url(#fireOuter)" opacity="0.95" />
+      
+      <!-- Core Inner Flame -->
+      <path d="M 256 135 
+               C 285 175 320 205 310 260 
+               C 300 298 272 320 256 328 
+               C 240 320 212 298 202 260 
+               C 192 205 227 175 256 135 Z" 
+            fill="url(#fireCore)" />
+    </g>
+
+    <!-- Striker Silhouette & Soccer Ball -->
+    <g>
+      <!-- Striker Player (Golden / White dynamic silhouette) -->
+      <!-- Head -->
+      <circle cx="210" cy="190" r="18" fill="#fef08a" />
+      
+      <!-- Torso -->
+      <path d="M 200 212 C 215 208 235 215 240 235 L 232 270 C 215 272 198 265 190 245 Z" fill="#fde68a" />
+      
+      <!-- Left Arm (balancing) -->
+      <path d="M 192 222 L 160 210 C 155 208 150 212 152 218 L 170 238 Z" fill="#fbbf24" />
+      
+      <!-- Right Arm (forward) -->
+      <path d="M 238 220 L 265 225 C 270 225 273 232 268 236 L 248 250 Z" fill="#fbbf24" />
+      
+      <!-- Standing / Support Leg -->
+      <path d="M 200 268 L 185 305 L 195 342 L 210 342 L 205 310 L 220 272 Z" fill="#fde68a" />
+      
+      <!-- Kicking Leg (extended powerfully toward the ball) -->
+      <path d="M 228 268 L 275 255 L 320 215 L 330 226 L 290 276 L 240 285 Z" fill="#fbbf24" />
+
+      <!-- Ball (Classic Soccer Ball with Pentagons) -->
+      <g transform="translate(330, 175)">
+        <!-- Ball Base -->
+        <circle cx="30" cy="30" r="30" fill="#ffffff" stroke="url(#goldGradient)" stroke-width="4" />
+        
+        <!-- Center Pentagon -->
+        <polygon points="30,12 43,21 38,36 22,36 17,21" fill="#0f172a" />
+        
+        <!-- Surrounding Lines & Patches -->
+        <line x1="30" y1="12" x2="30" y2="0" stroke="#0f172a" stroke-width="3" />
+        <line x1="43" y1="21" x2="56" y2="18" stroke="#0f172a" stroke-width="3" />
+        <line x1="38" y1="36" x2="48" y2="48" stroke="#0f172a" stroke-width="3" />
+        <line x1="22" y1="36" x2="12" y2="48" stroke="#0f172a" stroke-width="3" />
+        <line x1="17" y1="21" x2="4" y2="18" stroke="#0f172a" stroke-width="3" />
+
+        <!-- Fire trail behind ball -->
+        <path d="M -16 20 C -4 22 8 26 14 28 C 4 35 -6 38 -16 40 C -8 32 -10 25 -16 20 Z" fill="#ea580c" />
+      </g>
+    </g>
+
+    <!-- Prestigious Kurdish Name Banner Ribbon: لاوانی ئاگرین -->
+    <g transform="translate(0, 340)">
+      <!-- Ribbon Shadow -->
+      <rect x="76" y="10" width="360" height="70" rx="22" fill="#000000" opacity="0.6" filter="url(#glow)" />
+      
+      <!-- Ribbon Body -->
+      <rect x="80" y="6" width="352" height="68" rx="20" fill="url(#ribbonGrad)" stroke="url(#goldGradient)" stroke-width="5" />
+      
+      <!-- Ribbon Inner Border Line -->
+      <rect x="86" y="12" width="340" height="56" rx="14" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.7" />
+
+      <!-- Club Name in Arabic/Kurdish Script -->
+      <text x="256" y="52" 
+            font-family="'Noto Kurdish', 'Cairo', 'Noto Sans Arabic', sans-serif" 
+            font-size="38" 
+            font-weight="900" 
+            fill="#fde68a" 
+            text-anchor="middle">
+        لاوانی ئاگرین
+      </text>
+    </g>
+
+    <!-- Established 2018 at bottom arch -->
+    <g transform="translate(0, 442)">
+      <rect x="180" y="0" width="152" height="28" rx="14" fill="#131926" stroke="#f59e0b" stroke-width="2" />
+      <text x="256" y="19" 
+            font-family="'Cairo', sans-serif" 
+            font-size="15" 
+            font-weight="900" 
+            fill="#fbbf24" 
+            letter-spacing="2" 
+            text-anchor="middle">
+        2018 دامەزراوە
+      </text>
+    </g>
+
   </g>
-
-  <!-- Striker Player Silhouette -->
-  <circle cx="82" cy="74" r="7" fill="#fbbf24" />
-  <path d="M78 83 C84 81 92 84 94 92 L91 106 C84 107 77 104 74 96 Z" fill="#fef08a" />
-  <path d="M75 87 L62 82 C60 81 58 83 59 86 L66 94 Z" fill="#fbbf24" />
-  <path d="M93 86 L104 88 C106 88 107 91 105 93 L97 99 Z" fill="#fbbf24" />
-  <path d="M78 105 L72 120 L76 135 L82 135 L80 122 L86 107 Z" fill="#fef08a" />
-  <path d="M89 105 L108 100 L126 84 L130 89 L114 109 L94 112 Z" fill="#fbbf24" />
-
-  <!-- Club Name Ribbon -->
-  <rect x="36" y="142" width="128" height="26" rx="8" fill="#1e232d" stroke="#f59e0b" stroke-width="1.5" />
-  <text x="100" y="159" font-size="13" font-weight="900" fill="#fde047" text-anchor="middle" dominant-baseline="middle">
-    لاوانی ئاگرین
-  </text>
-  
-  <!-- Est 2018 -->
-  <text x="100" y="186" font-size="9" font-weight="800" fill="#f59e0b" text-anchor="middle">
-    EST. 2018
-  </text>
 </svg>

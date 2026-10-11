@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { LanguageCode, ThemeMode } from '../types';
-import { Globe, Moon, Sun, ShieldCheck, LogIn, LogOut, CheckCircle2, AlertCircle, UserPlus, User, Mail, Lock, Smartphone, Download, Sparkles } from 'lucide-react';
-import { InstallAppModal } from './InstallAppModal';
+import { Globe, Moon, Sun, ShieldCheck, LogIn, LogOut, CheckCircle2, AlertCircle, UserPlus, User, Mail, Lock } from 'lucide-react';
 import { ClubLogo } from './ClubLogo';
 
 export const SettingsTab: React.FC = () => {
   const { language, setLanguage, theme, setTheme, isAdmin, logoutAdmin, currentUser, registerUser, loginUser, logoutUser, t } = useApp();
-  const [showInstallModal, setShowInstallModal] = useState(false);
   
   // User auth state
   const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -124,38 +122,6 @@ export const SettingsTab: React.FC = () => {
               </div>
             </div>
 
-          </div>
-        </div>
-
-        {/* Mobile App & Installation Section (کردنی بە ئەپی فەرمی مۆبایل) */}
-        <div className={`p-6 rounded-3xl border ${theme === 'dark' ? 'bg-gradient-to-br from-amber-500/10 via-zinc-900 to-zinc-900 border-amber-500/30 shadow-xl' : 'bg-gradient-to-br from-amber-50 via-white to-white border-amber-200 shadow-md'}`}>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 text-zinc-950 shadow-lg shadow-orange-500/20">
-                <Smartphone className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-black text-amber-400">
-                    دابەزاندنی ئەپ و کردنی بە ئەپی فەرمی مۆبایل
-                  </h2>
-                  <span className="px-2 py-0.5 text-[10px] font-black bg-amber-500/20 text-amber-300 rounded-full border border-amber-500/30">
-                    PWA / APK
-                  </span>
-                </div>
-                <p className={`text-xs mt-1 ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-600'}`}>
-                  پڕۆژەکەت دەستبەجێ بە لۆگۆی فەرمی لاوانی ئاگرین دەبێتە ئەپ لەسەر مۆبایلت (ئەندرۆید و ئایفۆن) بەبێ هێڵی براوسەر!
-                </p>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setShowInstallModal(true)}
-              className="py-3 px-5 rounded-2xl font-black text-xs bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-transform hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
-            >
-              <Download className="w-4 h-4" />
-              <span>چۆنیەتی دابەزاندن و دروستکردنی APK</span>
-            </button>
           </div>
         </div>
 
@@ -307,11 +273,6 @@ export const SettingsTab: React.FC = () => {
         </div>
 
       </div>
-
-      <InstallAppModal 
-        isOpen={showInstallModal} 
-        onClose={() => setShowInstallModal(false)} 
-      />
     </div>
   );
 };
