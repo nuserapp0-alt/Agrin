@@ -1,0 +1,7 @@
+{
+  "name": "GoalZone - Pro Football Hub & Live Matches",
+  "description": "Comprehensive football application with live matches, breaking news, player database, admin panel, multi-language support (English, Arabic, Kurdish), and dark/light mode.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
