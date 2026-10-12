@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { LanguageCode, ThemeMode } from '../types';
-import { Globe, Moon, Sun, ShieldCheck, LogIn, LogOut, CheckCircle2, AlertCircle, UserPlus, User, Mail, Lock } from 'lucide-react';
+import { Globe, Moon, Sun, ShieldCheck, LogIn, LogOut, CheckCircle2, AlertCircle, UserPlus, User, Mail, Lock, Image as ImageIcon } from 'lucide-react';
 import { ClubLogo } from './ClubLogo';
 
 export const SettingsTab: React.FC = () => {
-  const { language, setLanguage, theme, setTheme, isAdmin, logoutAdmin, currentUser, registerUser, loginUser, logoutUser, t } = useApp();
+  const { language, setLanguage, theme, setTheme, isAdmin, logoutAdmin, currentUser, registerUser, loginUser, logoutUser, logoUrl, setLogoUrl, t } = useApp();
   
   // User auth state
   const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -122,6 +122,57 @@ export const SettingsTab: React.FC = () => {
               </div>
             </div>
 
+          </div>
+        </div>
+
+        {/* Official Club Logo Management */}
+        <div className={`p-6 rounded-3xl border ${theme === 'dark' ? 'bg-slate-900/90 border-slate-800 shadow-xl' : 'bg-white border-slate-200 shadow-md'}`}>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+            <div className="flex items-center gap-4">
+              <ClubLogo size="md" logoUrl={logoUrl} showEst={false} />
+              <div>
+                <h3 className="text-base font-extrabold flex items-center gap-2">
+                  <span>لۆگۆی فەرمی یانەی لاوانی ئاگرین</span>
+                  <span className="px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-400 rounded-full">فەرمی</span>
+                </h3>
+                <p className={`text-xs mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                  لۆگۆی بازنەیی پڕۆژە. دەتوانیت ڕاستەوخۆ وێنەکەی مۆبایلت لێرەشەوە هەڵبژێریت.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <label className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 text-xs font-black shadow-md shadow-amber-500/20 cursor-pointer transition-all hover:scale-105 active:scale-95">
+                <ImageIcon className="w-4 h-4" />
+                <span>هەڵبژاردنی وێنەی لۆگۆ لە مۆبایلت</span>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  className="hidden" 
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        const res = event.target?.result as string;
+                        if (res) setLogoUrl(res);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }} 
+                />
+              </label>
+
+              {logoUrl && (
+                <button
+                  onClick={() => setLogoUrl('')}
+                  className="px-3 py-2.5 rounded-xl border border-rose-500/40 hover:bg-rose-500/10 text-rose-400 text-xs font-bold transition-all"
+                  title="گەڕانەوە بۆ لۆگۆی بنەڕەتی"
+                >
+                  گەڕانەوە بۆ لۆگۆی بنەڕەتی
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

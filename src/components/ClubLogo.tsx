@@ -17,16 +17,16 @@ export const ClubLogo: React.FC<ClubLogoProps> = ({ className = '', size = 'md',
   }[size] || 'w-10 h-10';
 
   const shouldShowEst = showEst !== undefined ? showEst : (size === 'lg' || size === 'xl');
-  const sourceImage = logoUrl || '/icon.svg';
+  const sourceImage = logoUrl || '/club-logo.png?v=5';
 
   return (
     <div className={`flex flex-col items-center flex-shrink-0 ${className}`}>
       {/* Official circular emblem with gold border and fiery glow */}
-      <div className={`${sizeClasses} rounded-full overflow-hidden shadow-xl shadow-amber-500/20 border-2 border-amber-400 bg-[#090d16] flex items-center justify-center p-0.5 relative group transition-transform duration-200`}>
+      <div className={`${sizeClasses} rounded-full overflow-hidden shadow-xl shadow-orange-500/30 border-2 border-amber-400 bg-white flex items-center justify-center relative group transition-transform duration-200`}>
         <img 
           src={sourceImage} 
           alt="یانەی وەرزشی لاوانی ئاگرین - Lawani Agrin FC" 
-          className="w-full h-full object-contain rounded-full"
+          className="w-full h-full object-cover rounded-full"
           loading="eager"
         />
       </div>

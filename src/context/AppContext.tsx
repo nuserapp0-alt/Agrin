@@ -63,9 +63,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [language, setLanguage] = useState<LanguageCode>('ku');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [logoUrl, setLogoUrl] = useState<string>(() => {
-    return localStorage.getItem('app_logo_url') || '';
-  });
+  const [logoUrl, setLogoUrl] = useState<string>('');
 
   const [selectedNewsItem, setSelectedNewsItem] = useState<NewsItem | null>(null);
   const [selectedPlayerItem, setSelectedPlayerItem] = useState<PlayerItem | null>(null);
@@ -148,7 +146,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [currentUser]);
 
   useEffect(() => {
-    localStorage.setItem('app_logo_url', logoUrl);
+    if (logoUrl) {
+      localStorage.setItem('app_logo_url', logoUrl);
+    } else {
+      localStorage.removeItem('app_logo_url');
+    }
   }, [logoUrl]);
 
   const toggleTheme = () => {
