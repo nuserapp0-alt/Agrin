@@ -128,6 +128,11 @@ export const Navbar: React.FC = () => {
             >
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
             </button>
+
+            {/* Secondary Logo on Left side */}
+            <div className="hidden sm:block pl-1">
+              <ClubLogo size="xs" logoUrl={logoUrl} showEst={false} />
+            </div>
           </div>
         </div>
 

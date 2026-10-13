@@ -63,7 +63,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [language, setLanguage] = useState<LanguageCode>('ku');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [logoUrl, setLogoUrl] = useState<string>('');
+  const [logoUrl, setLogoUrl] = useState<string>(() => {
+    return localStorage.getItem('app_logo_url') || '';
+  });
 
   const [selectedNewsItem, setSelectedNewsItem] = useState<NewsItem | null>(null);
   const [selectedPlayerItem, setSelectedPlayerItem] = useState<PlayerItem | null>(null);
@@ -219,49 +221,49 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // News CRUD
   const addNews = (item: Omit<NewsItem, 'id'>) => {
     const newItem: NewsItem = { ...item, id: 'news-' + Date.now() };
-    setNews([newItem, ...news]);
+    setNews(prev => [newItem, ...prev]);
   };
   const updateNews = (id: string, item: Omit<NewsItem, 'id'>) => {
-    setNews(news.map(n => n.id === id ? { ...item, id } : n));
+    setNews(prev => prev.map(n => n.id === id ? { ...item, id } : n));
   };
   const deleteNews = (id: string) => {
-    setNews(news.filter(n => n.id !== id));
+    setNews(prev => prev.filter(n => n.id !== id));
   };
 
   // Matches CRUD
   const addMatch = (item: Omit<MatchItem, 'id'>) => {
     const newItem: MatchItem = { ...item, id: 'match-' + Date.now() };
-    setMatches([newItem, ...matches]);
+    setMatches(prev => [newItem, ...prev]);
   };
   const updateMatch = (id: string, item: Omit<MatchItem, 'id'>) => {
-    setMatches(matches.map(m => m.id === id ? { ...item, id } : m));
+    setMatches(prev => prev.map(m => m.id === id ? { ...item, id } : m));
   };
   const deleteMatch = (id: string) => {
-    setMatches(matches.filter(m => m.id !== id));
+    setMatches(prev => prev.filter(m => m.id !== id));
   };
 
   // Players CRUD
   const addPlayer = (item: Omit<PlayerItem, 'id'>) => {
     const newItem: PlayerItem = { ...item, id: 'player-' + Date.now() };
-    setPlayers([...players, newItem]);
+    setPlayers(prev => [...prev, newItem]);
   };
   const updatePlayer = (id: string, item: Omit<PlayerItem, 'id'>) => {
-    setPlayers(players.map(p => p.id === id ? { ...item, id } : p));
+    setPlayers(prev => prev.map(p => p.id === id ? { ...item, id } : p));
   };
   const deletePlayer = (id: string) => {
-    setPlayers(players.filter(p => p.id !== id));
+    setPlayers(prev => prev.filter(p => p.id !== id));
   };
 
   // Awards CRUD
   const addAward = (item: Omit<AwardItem, 'id'>) => {
     const newItem: AwardItem = { ...item, id: 'award-' + Date.now() };
-    setAwards([newItem, ...awards]);
+    setAwards(prev => [newItem, ...prev]);
   };
   const updateAward = (id: string, item: Omit<AwardItem, 'id'>) => {
-    setAwards(awards.map(a => a.id === id ? { ...item, id } : a));
+    setAwards(prev => prev.map(a => a.id === id ? { ...item, id } : a));
   };
   const deleteAward = (id: string) => {
-    setAwards(awards.filter(a => a.id !== id));
+    setAwards(prev => prev.filter(a => a.id !== id));
   };
 
   const t = (key: string): string => {

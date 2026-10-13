@@ -1,12 +1,12 @@
-const CACHE_NAME = 'lawani-agrin-v5';
+const CACHE_NAME = 'lawani-agrin-v7';
 const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/club-logo.png?v=5',
-  '/pwa-192x192.png?v=5',
-  '/pwa-512x512.png?v=5',
-  '/maskable-icon-512x512.png?v=5'
+  '/club-logo.png?v=7',
+  '/pwa-192x192.png?v=7',
+  '/pwa-512x512.png?v=7',
+  '/maskable-icon-512x512.png?v=7'
 ];
 
 self.addEventListener('install', (event) => {

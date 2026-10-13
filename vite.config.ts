@@ -24,31 +24,31 @@ export default defineConfig(() => {
           scope: '/',
           icons: [
             {
-              src: '/pwa-192x192.png?v=5',
+              src: '/pwa-192x192.png?v=6',
               sizes: '192x192',
               type: 'image/png',
               purpose: 'any'
             },
             {
-              src: '/pwa-512x512.png?v=5',
+              src: '/pwa-512x512.png?v=6',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any'
             },
             {
-              src: '/maskable-icon-192x192.png?v=5',
+              src: '/maskable-icon-192x192.png?v=6',
               sizes: '192x192',
               type: 'image/png',
               purpose: 'maskable'
             },
             {
-              src: '/maskable-icon-512x512.png?v=5',
+              src: '/maskable-icon-512x512.png?v=6',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'maskable'
             },
             {
-              src: '/club-logo.png?v=5',
+              src: '/club-logo.png?v=6',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any'
@@ -56,8 +56,7 @@ export default defineConfig(() => {
           ]
         },
         devOptions: {
-          enabled: true,
-          type: 'module'
+          enabled: false
         }
       })
     ],
