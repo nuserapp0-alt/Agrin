@@ -26,7 +26,7 @@ export const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) =
       
       {/* Background glowing effects */}
       <div className="absolute w-96 h-96 bg-amber-500/10 rounded-full blur-3xl animate-pulse pointer-events-none" />
-      <div className="absolute w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute w-80 h-80 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center px-4 text-center max-w-md">
         
@@ -35,7 +35,7 @@ export const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) =
           <ClubLogo size="xl" logoUrl={logoUrl} showEst={true} />
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent mb-1 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent mb-1 tracking-tight drop-shadow-md">
           لاوانی ئاگرین
         </h1>
         <p className="text-xs sm:text-sm text-slate-300 font-bold tracking-widest uppercase">

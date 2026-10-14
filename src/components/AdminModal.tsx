@@ -20,7 +20,8 @@ export const AdminModal: React.FC = () => {
     theme,
     adminEmail,
     isLoggedInAdmin,
-    setIsLoggedInAdmin
+    setIsLoggedInAdmin,
+    logoUrl
   } = useApp();
 
   const [contentType, setContentType] = useState<'news' | 'match' | 'player' | 'award'>('news');
@@ -55,8 +56,8 @@ export const AdminModal: React.FC = () => {
   const [newsAuthor, setNewsAuthor] = useState('Aram Baker');
 
   // Match State
-  const [homeTeam, setHomeTeam] = useState('');
-  const [homeLogo, setHomeLogo] = useState('');
+  const [homeTeam, setHomeTeam] = useState('لاوانی ئاگرین');
+  const [homeLogo, setHomeLogo] = useState(logoUrl || '/club-logo.png?v=7');
   const [awayTeam, setAwayTeam] = useState('');
   const [awayLogo, setAwayLogo] = useState('');
   const [homeScore, setHomeScore] = useState(0);
@@ -101,8 +102,8 @@ export const AdminModal: React.FC = () => {
         setNewsAuthor(editingItem.author || 'Aram Baker');
       } else if (editingItem.type === 'match') {
         setContentType('match');
-        setHomeTeam(editingItem.homeTeam || '');
-        setHomeLogo(editingItem.homeLogo || '');
+        setHomeTeam(editingItem.homeTeam || 'لاوانی ئاگرین');
+        setHomeLogo(editingItem.homeLogo || logoUrl || '/club-logo.png?v=7');
         setAwayTeam(editingItem.awayTeam || '');
         setAwayLogo(editingItem.awayLogo || '');
         setHomeScore(editingItem.homeScore ?? 0);

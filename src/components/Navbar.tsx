@@ -55,7 +55,7 @@ export const Navbar: React.FC = () => {
               <ClubLogo size="sm" logoUrl={logoUrl} showEst={false} />
             </div>
             <div className="flex flex-col text-right">
-              <span className="font-black text-sm sm:text-base bg-gradient-to-r from-amber-400 via-orange-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
+              <span className="font-black text-sm sm:text-base bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent leading-tight">
                 لاوانی ئاگرین
               </span>
               <span className="text-[10px] text-amber-400/90 font-bold tracking-wider leading-tight">
