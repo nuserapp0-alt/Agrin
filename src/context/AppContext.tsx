@@ -172,6 +172,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     if (logoUrl) {
       localStorage.setItem('app_logo_url', logoUrl);
+      const link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
+      if (link) link.href = logoUrl;
+      const appleLink = document.querySelector("link[rel='apple-touch-icon']") as HTMLLinkElement;
+      if (appleLink) appleLink.href = logoUrl;
     } else {
       localStorage.removeItem('app_logo_url');
     }

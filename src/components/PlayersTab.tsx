@@ -132,9 +132,9 @@ export const PlayersTab: React.FC = () => {
                         </div>
 
                         <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs text-slate-400 font-medium">
-                              {player.nationality}
+                          <div className="flex items-center gap-1.5 mb-1">
+                            <span className="text-[11px] px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 font-bold flex items-center gap-1 border border-amber-500/20">
+                              📍 {player.nationality}
                             </span>
                           </div>
                           <h3 className="font-bold text-base group-hover:text-emerald-400 transition-colors flex items-center gap-2 flex-wrap">
