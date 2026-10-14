@@ -112,6 +112,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [editingItem, setEditingItem] = useState<any>(null);
 
   useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'app_news' && e.newValue) {
+        setNews(JSON.parse(e.newValue));
+      }
+      if (e.key === 'app_matches' && e.newValue) {
+        setMatches(JSON.parse(e.newValue));
+      }
+      if (e.key === 'app_players' && e.newValue) {
+        setPlayers(JSON.parse(e.newValue));
+      }
+      if (e.key === 'app_awards' && e.newValue) {
+        setAwards(JSON.parse(e.newValue));
+      }
+      if (e.key === 'app_logo_url') {
+        setLogoUrl(e.newValue || '');
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem('app_news', JSON.stringify(news));
   }, [news]);
 
