@@ -116,22 +116,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     const unsubNews = onSnapshot(collection(db, 'news'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as NewsItem[];
-      if (items.length > 0) setNews(items);
+      setNews(items);
     }, (err) => console.log('Firestore news sync error:', err));
 
     const unsubMatches = onSnapshot(collection(db, 'matches'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as MatchItem[];
-      if (items.length > 0) setMatches(items);
+      setMatches(items);
     }, (err) => console.log('Firestore matches sync error:', err));
 
     const unsubPlayers = onSnapshot(collection(db, 'players'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as PlayerItem[];
-      if (items.length > 0) setPlayers(items);
+      setPlayers(items);
     }, (err) => console.log('Firestore players sync error:', err));
 
     const unsubAwards = onSnapshot(collection(db, 'awards'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AwardItem[];
-      if (items.length > 0) setAwards(items);
+      setAwards(items);
     }, (err) => console.log('Firestore awards sync error:', err));
 
     const unsubSettings = onSnapshot(doc(db, 'settings', 'config'), (docSnap) => {
