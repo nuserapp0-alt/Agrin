@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { TabType, LanguageCode, ThemeMode, NewsItem, MatchItem, PlayerItem, AwardItem } from '../types';
 import { initialNews, initialMatches, initialPlayers, initialAwards } from '../data/initialData';
 import { db } from '../firebase';
-import { collection, doc, setDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, setDoc, deleteDoc, onSnapshot, getDocs } from 'firebase/firestore';
 
 interface AppContextType {
   currentTab: TabType;
@@ -114,6 +114,38 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [editingItem, setEditingItem] = useState<any>(null);
 
   useEffect(() => {
+    const seedFirestore = async () => {
+      try {
+        const newsSnap = await getDocs(collection(db, 'news'));
+        if (newsSnap.empty) {
+          for (const item of initialNews) {
+            await setDoc(doc(db, 'news', item.id), item);
+          }
+        }
+        const matchesSnap = await getDocs(collection(db, 'matches'));
+        if (matchesSnap.empty) {
+          for (const item of initialMatches) {
+            await setDoc(doc(db, 'matches', item.id), item);
+          }
+        }
+        const playersSnap = await getDocs(collection(db, 'players'));
+        if (playersSnap.empty) {
+          for (const item of initialPlayers) {
+            await setDoc(doc(db, 'players', item.id), item);
+          }
+        }
+        const awardsSnap = await getDocs(collection(db, 'awards'));
+        if (awardsSnap.empty) {
+          for (const item of initialAwards) {
+            await setDoc(doc(db, 'awards', item.id), item);
+          }
+        }
+      } catch (e) {
+        console.log('Seeding error:', e);
+      }
+    };
+    seedFirestore();
+
     const unsubNews = onSnapshot(collection(db, 'news'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as NewsItem[];
       setNews(items);
