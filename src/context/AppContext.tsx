@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { TabType, LanguageCode, ThemeMode, NewsItem, MatchItem, PlayerItem, AwardItem } from '../types';
 import { initialNews, initialMatches, initialPlayers, initialAwards } from '../data/initialData';
+import { db } from '../firebase';
+import { collection, doc, setDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
 
 interface AppContextType {
   currentTab: TabType;
@@ -110,6 +112,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [showAdminModal, setShowAdminModal] = useState<boolean>(false);
   const [editingItem, setEditingItem] = useState<any>(null);
+
+  useEffect(() => {
+    const unsubNews = onSnapshot(collection(db, 'news'), (snapshot) => {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as NewsItem[];
+      if (items.length > 0) setNews(items);
+    }, (err) => console.log('Firestore news sync error:', err));
+
+    const unsubMatches = onSnapshot(collection(db, 'matches'), (snapshot) => {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as MatchItem[];
+      if (items.length > 0) setMatches(items);
+    }, (err) => console.log('Firestore matches sync error:', err));
+
+    const unsubPlayers = onSnapshot(collection(db, 'players'), (snapshot) => {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as PlayerItem[];
+      if (items.length > 0) setPlayers(items);
+    }, (err) => console.log('Firestore players sync error:', err));
+
+    const unsubAwards = onSnapshot(collection(db, 'awards'), (snapshot) => {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AwardItem[];
+      if (items.length > 0) setAwards(items);
+    }, (err) => console.log('Firestore awards sync error:', err));
+
+    const unsubSettings = onSnapshot(doc(db, 'settings', 'config'), (docSnap) => {
+      if (docSnap.exists() && docSnap.data().logoUrl) {
+        setLogoUrl(docSnap.data().logoUrl);
+      }
+    }, (err) => console.log('Firestore settings sync error:', err));
+
+    return () => {
+      unsubNews();
+      unsubMatches();
+      unsubPlayers();
+      unsubAwards();
+      unsubSettings();
+    };
+  }, []);
 
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
@@ -245,51 +283,76 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // News CRUD
-  const addNews = (item: Omit<NewsItem, 'id'>) => {
+  const addNews = async (item: Omit<NewsItem, 'id'>) => {
     const newItem: NewsItem = { ...item, id: 'news-' + Date.now() };
     setNews(prev => [newItem, ...prev]);
+    try { await setDoc(doc(db, 'news', newItem.id), newItem); } catch(e) { console.log(e); }
   };
-  const updateNews = (id: string, item: Omit<NewsItem, 'id'>) => {
-    setNews(prev => prev.map(n => n.id === id ? { ...item, id } : n));
+  const updateNews = async (id: string, item: Omit<NewsItem, 'id'>) => {
+    const updated = { ...item, id };
+    setNews(prev => prev.map(n => n.id === id ? updated : n));
+    try { await setDoc(doc(db, 'news', id), updated); } catch(e) { console.log(e); }
   };
-  const deleteNews = (id: string) => {
+  const deleteNews = async (id: string) => {
     setNews(prev => prev.filter(n => n.id !== id));
+    try { await deleteDoc(doc(db, 'news', id)); } catch(e) { console.log(e); }
   };
 
   // Matches CRUD
-  const addMatch = (item: Omit<MatchItem, 'id'>) => {
+  const addMatch = async (item: Omit<MatchItem, 'id'>) => {
     const newItem: MatchItem = { ...item, id: 'match-' + Date.now() };
     setMatches(prev => [newItem, ...prev]);
+    try { await setDoc(doc(db, 'matches', newItem.id), newItem); } catch(e) { console.log(e); }
   };
-  const updateMatch = (id: string, item: Omit<MatchItem, 'id'>) => {
-    setMatches(prev => prev.map(m => m.id === id ? { ...item, id } : m));
+  const updateMatch = async (id: string, item: Omit<MatchItem, 'id'>) => {
+    const updated = { ...item, id };
+    setMatches(prev => prev.map(m => m.id === id ? updated : m));
+    try { await setDoc(doc(db, 'matches', id), updated); } catch(e) { console.log(e); }
   };
-  const deleteMatch = (id: string) => {
+  const deleteMatch = async (id: string) => {
     setMatches(prev => prev.filter(m => m.id !== id));
+    try { await deleteDoc(doc(db, 'matches', id)); } catch(e) { console.log(e); }
   };
 
   // Players CRUD
-  const addPlayer = (item: Omit<PlayerItem, 'id'>) => {
+  const addPlayer = async (item: Omit<PlayerItem, 'id'>) => {
     const newItem: PlayerItem = { ...item, id: 'player-' + Date.now() };
     setPlayers(prev => [...prev, newItem]);
+    try { await setDoc(doc(db, 'players', newItem.id), newItem); } catch(e) { console.log(e); }
   };
-  const updatePlayer = (id: string, item: Omit<PlayerItem, 'id'>) => {
-    setPlayers(prev => prev.map(p => p.id === id ? { ...item, id } : p));
+  const updatePlayer = async (id: string, item: Omit<PlayerItem, 'id'>) => {
+    const updated = { ...item, id };
+    setPlayers(prev => prev.map(p => p.id === id ? updated : p));
+    try { await setDoc(doc(db, 'players', id), updated); } catch(e) { console.log(e); }
   };
-  const deletePlayer = (id: string) => {
+  const deletePlayer = async (id: string) => {
     setPlayers(prev => prev.filter(p => p.id !== id));
+    try { await deleteDoc(doc(db, 'players', id)); } catch(e) { console.log(e); }
   };
 
   // Awards CRUD
-  const addAward = (item: Omit<AwardItem, 'id'>) => {
+  const addAward = async (item: Omit<AwardItem, 'id'>) => {
     const newItem: AwardItem = { ...item, id: 'award-' + Date.now() };
     setAwards(prev => [newItem, ...prev]);
+    try { await setDoc(doc(db, 'awards', newItem.id), newItem); } catch(e) { console.log(e); }
   };
-  const updateAward = (id: string, item: Omit<AwardItem, 'id'>) => {
-    setAwards(prev => prev.map(a => a.id === id ? { ...item, id } : a));
+  const updateAward = async (id: string, item: Omit<AwardItem, 'id'>) => {
+    const updated = { ...item, id };
+    setAwards(prev => prev.map(a => a.id === id ? updated : a));
+    try { await setDoc(doc(db, 'awards', id), updated); } catch(e) { console.log(e); }
   };
-  const deleteAward = (id: string) => {
+  const deleteAward = async (id: string) => {
     setAwards(prev => prev.filter(a => a.id !== id));
+    try { await deleteDoc(doc(db, 'awards', id)); } catch(e) { console.log(e); }
+  };
+
+  const handleSetLogoUrl = async (url: string) => {
+    setLogoUrl(url);
+    try {
+      await setDoc(doc(db, 'settings', 'config'), { logoUrl: url }, { merge: true });
+    } catch(e) {
+      console.log('Logo save error:', e);
+    }
   };
 
   const t = (key: string): string => {
@@ -396,7 +459,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       showAdminModal, setShowAdminModal, openAdminModal,
       editingItem, setEditingItem,
       searchQuery, setSearchQuery,
-      logoUrl, setLogoUrl,
+      logoUrl, setLogoUrl: handleSetLogoUrl,
       selectedNewsItem, setSelectedNewsItem,
       selectedPlayerItem, setSelectedPlayerItem,
       addNews, updateNews, deleteNews,

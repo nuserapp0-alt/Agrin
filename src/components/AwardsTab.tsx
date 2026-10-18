@@ -94,14 +94,20 @@ export const AwardsTab: React.FC = () => {
                 {isAdmin && (
                   <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-700 shadow-lg">
                     <button
-                      onClick={() => openAdminModal('award', award)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openAdminModal('award', award);
+                      }}
                       className="p-1.5 text-slate-300 hover:text-white transition-colors"
                       title={t('edit')}
                     >
                       <Edit3 className="w-4 h-4 text-amber-400" />
                     </button>
                     <button
-                      onClick={() => deleteAward(award.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteAward(award.id);
+                      }}
                       className="p-1.5 text-red-400 hover:text-red-300 transition-colors"
                       title={t('delete')}
                     >
