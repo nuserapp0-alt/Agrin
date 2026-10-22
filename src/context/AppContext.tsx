@@ -116,6 +116,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     const seedFirestore = async () => {
       try {
+        if (localStorage.getItem('app_db_seeded')) return;
+
         const newsSnap = await getDocs(collection(db, 'news'));
         if (newsSnap.empty) {
           for (const item of initialNews) {
@@ -140,6 +142,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             await setDoc(doc(db, 'awards', item.id), item);
           }
         }
+        localStorage.setItem('app_db_seeded', 'true');
       } catch (e) {
         console.log('Seeding error:', e);
       }
