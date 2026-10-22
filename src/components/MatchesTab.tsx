@@ -132,7 +132,12 @@ export const MatchesTab: React.FC = () => {
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
-                          onClick={() => deleteMatch(match.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm('دڵنیای لە سڕینەوەی ئەم یارییە؟')) {
+                              deleteMatch(match.id);
+                            }
+                          }}
                           className="p-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
                           title={t('delete')}
                         >

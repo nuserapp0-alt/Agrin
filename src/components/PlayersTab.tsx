@@ -106,7 +106,9 @@ export const PlayersTab: React.FC = () => {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              deletePlayer(player.id);
+                              if (window.confirm('دڵنیای لە سڕینەوەی ئەم یاریزانە؟')) {
+                                deletePlayer(player.id);
+                              }
                             }}
                             className="p-1 text-red-400 hover:text-red-300 transition-colors"
                             title={t('delete')}

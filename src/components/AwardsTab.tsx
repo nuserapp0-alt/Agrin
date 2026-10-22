@@ -106,7 +106,9 @@ export const AwardsTab: React.FC = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        deleteAward(award.id);
+                        if (window.confirm('دڵنیای لە سڕینەوەی ئەم نازناوە؟')) {
+                          deleteAward(award.id);
+                        }
                       }}
                       className="p-1.5 text-red-400 hover:text-red-300 transition-colors"
                       title={t('delete')}

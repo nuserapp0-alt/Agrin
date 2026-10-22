@@ -329,8 +329,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try { await setDoc(doc(db, 'news', id), updated); } catch(e) { console.log(e); }
   };
   const deleteNews = async (id: string) => {
-    setNews(prev => prev.filter(n => n.id !== id));
-    try { await deleteDoc(doc(db, 'news', id)); } catch(e) { console.log(e); }
+    const updated = news.filter(n => n.id !== id);
+    setNews(updated);
+    localStorage.setItem('app_news', JSON.stringify(updated));
+    try { await deleteDoc(doc(db, 'news', id)); } catch(e) { console.log('Delete news error:', e); }
   };
 
   // Matches CRUD
@@ -345,8 +347,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try { await setDoc(doc(db, 'matches', id), updated); } catch(e) { console.log(e); }
   };
   const deleteMatch = async (id: string) => {
-    setMatches(prev => prev.filter(m => m.id !== id));
-    try { await deleteDoc(doc(db, 'matches', id)); } catch(e) { console.log(e); }
+    const updated = matches.filter(m => m.id !== id);
+    setMatches(updated);
+    localStorage.setItem('app_matches', JSON.stringify(updated));
+    try { await deleteDoc(doc(db, 'matches', id)); } catch(e) { console.log('Delete match error:', e); }
   };
 
   // Players CRUD
@@ -361,8 +365,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try { await setDoc(doc(db, 'players', id), updated); } catch(e) { console.log(e); }
   };
   const deletePlayer = async (id: string) => {
-    setPlayers(prev => prev.filter(p => p.id !== id));
-    try { await deleteDoc(doc(db, 'players', id)); } catch(e) { console.log(e); }
+    const updated = players.filter(p => p.id !== id);
+    setPlayers(updated);
+    localStorage.setItem('app_players', JSON.stringify(updated));
+    try { await deleteDoc(doc(db, 'players', id)); } catch(e) { console.log('Delete player error:', e); }
   };
 
   // Awards CRUD
@@ -377,8 +383,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try { await setDoc(doc(db, 'awards', id), updated); } catch(e) { console.log(e); }
   };
   const deleteAward = async (id: string) => {
-    setAwards(prev => prev.filter(a => a.id !== id));
-    try { await deleteDoc(doc(db, 'awards', id)); } catch(e) { console.log(e); }
+    const updated = awards.filter(a => a.id !== id);
+    setAwards(updated);
+    localStorage.setItem('app_awards', JSON.stringify(updated));
+    try { await deleteDoc(doc(db, 'awards', id)); } catch(e) { console.log('Delete award error:', e); }
   };
 
   const handleSetLogoUrl = async (url: string) => {
