@@ -320,13 +320,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // News CRUD
   const addNews = async (item: Omit<NewsItem, 'id'>) => {
     const newItem: NewsItem = { ...item, id: 'news-' + Date.now() };
-    setNews(prev => [newItem, ...prev]);
-    try { await setDoc(doc(db, 'news', newItem.id), newItem); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'news', newItem.id), newItem);
+      setNews(prev => {
+        const next = [newItem, ...prev];
+        localStorage.setItem('app_news', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Add news error:', e);
+      setNews(prev => [newItem, ...prev]);
+    }
   };
   const updateNews = async (id: string, item: Omit<NewsItem, 'id'>) => {
     const updated = { ...item, id };
-    setNews(prev => prev.map(n => n.id === id ? updated : n));
-    try { await setDoc(doc(db, 'news', id), updated); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'news', id), updated);
+      setNews(prev => {
+        const next = prev.map(n => n.id === id ? updated : n);
+        localStorage.setItem('app_news', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Update news error:', e);
+      setNews(prev => prev.map(n => n.id === id ? updated : n));
+    }
   };
   const deleteNews = async (id: string) => {
     const updated = news.filter(n => n.id !== id);
@@ -338,13 +356,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Matches CRUD
   const addMatch = async (item: Omit<MatchItem, 'id'>) => {
     const newItem: MatchItem = { ...item, id: 'match-' + Date.now() };
-    setMatches(prev => [newItem, ...prev]);
-    try { await setDoc(doc(db, 'matches', newItem.id), newItem); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'matches', newItem.id), newItem);
+      setMatches(prev => {
+        const next = [newItem, ...prev];
+        localStorage.setItem('app_matches', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Add match error:', e);
+      setMatches(prev => [newItem, ...prev]);
+    }
   };
   const updateMatch = async (id: string, item: Omit<MatchItem, 'id'>) => {
     const updated = { ...item, id };
-    setMatches(prev => prev.map(m => m.id === id ? updated : m));
-    try { await setDoc(doc(db, 'matches', id), updated); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'matches', id), updated);
+      setMatches(prev => {
+        const next = prev.map(m => m.id === id ? updated : m);
+        localStorage.setItem('app_matches', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Update match error:', e);
+      setMatches(prev => prev.map(m => m.id === id ? updated : m));
+    }
   };
   const deleteMatch = async (id: string) => {
     const updated = matches.filter(m => m.id !== id);
@@ -356,13 +392,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Players CRUD
   const addPlayer = async (item: Omit<PlayerItem, 'id'>) => {
     const newItem: PlayerItem = { ...item, id: 'player-' + Date.now() };
-    setPlayers(prev => [...prev, newItem]);
-    try { await setDoc(doc(db, 'players', newItem.id), newItem); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'players', newItem.id), newItem);
+      setPlayers(prev => {
+        const next = [...prev, newItem];
+        localStorage.setItem('app_players', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Add player error:', e);
+      setPlayers(prev => [...prev, newItem]);
+    }
   };
   const updatePlayer = async (id: string, item: Omit<PlayerItem, 'id'>) => {
     const updated = { ...item, id };
-    setPlayers(prev => prev.map(p => p.id === id ? updated : p));
-    try { await setDoc(doc(db, 'players', id), updated); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'players', id), updated);
+      setPlayers(prev => {
+        const next = prev.map(p => p.id === id ? updated : p);
+        localStorage.setItem('app_players', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Update player error:', e);
+      setPlayers(prev => prev.map(p => p.id === id ? updated : p));
+    }
   };
   const deletePlayer = async (id: string) => {
     const updated = players.filter(p => p.id !== id);
@@ -374,13 +428,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Awards CRUD
   const addAward = async (item: Omit<AwardItem, 'id'>) => {
     const newItem: AwardItem = { ...item, id: 'award-' + Date.now() };
-    setAwards(prev => [newItem, ...prev]);
-    try { await setDoc(doc(db, 'awards', newItem.id), newItem); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'awards', newItem.id), newItem);
+      setAwards(prev => {
+        const next = [newItem, ...prev];
+        localStorage.setItem('app_awards', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Add award error:', e);
+      setAwards(prev => [newItem, ...prev]);
+    }
   };
   const updateAward = async (id: string, item: Omit<AwardItem, 'id'>) => {
     const updated = { ...item, id };
-    setAwards(prev => prev.map(a => a.id === id ? updated : a));
-    try { await setDoc(doc(db, 'awards', id), updated); } catch(e) { console.log(e); }
+    try {
+      await setDoc(doc(db, 'awards', id), updated);
+      setAwards(prev => {
+        const next = prev.map(a => a.id === id ? updated : a);
+        localStorage.setItem('app_awards', JSON.stringify(next));
+        return next;
+      });
+    } catch(e) {
+      console.log('Update award error:', e);
+      setAwards(prev => prev.map(a => a.id === id ? updated : a));
+    }
   };
   const deleteAward = async (id: string) => {
     const updated = awards.filter(a => a.id !== id);

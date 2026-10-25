@@ -90,34 +90,6 @@ export const AwardsTab: React.FC = () => {
                     : 'bg-white border-slate-200 hover:border-amber-400 shadow-md'
                 }`}
               >
-                {/* Admin Actions */}
-                {isAdmin && (
-                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-700 shadow-lg">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openAdminModal('award', award);
-                      }}
-                      className="p-1.5 text-slate-300 hover:text-white transition-colors"
-                      title={t('edit')}
-                    >
-                      <Edit3 className="w-4 h-4 text-amber-400" />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (window.confirm('دڵنیای لە سڕینەوەی ئەم نازناوە؟')) {
-                          deleteAward(award.id);
-                        }
-                      }}
-                      className="p-1.5 text-red-400 hover:text-red-300 transition-colors"
-                      title={t('delete')}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
-
                 {/* Trophy Image */}
                 <div className="relative h-52 overflow-hidden bg-gradient-to-tr from-amber-500/20 via-orange-500/10 to-transparent flex items-center justify-center p-6">
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
@@ -133,6 +105,34 @@ export const AwardsTab: React.FC = () => {
                     <Crown className="w-3.5 h-3.5" />
                     <span>{award.season}</span>
                   </div>
+
+                  {/* Admin Actions */}
+                  {isAdmin && (
+                    <div className="absolute top-4 right-4 z-30 flex items-center gap-1.5 bg-slate-950/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-700 shadow-xl">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openAdminModal('award', award);
+                        }}
+                        className="p-1.5 text-slate-300 hover:text-white transition-colors"
+                        title={t('edit')}
+                      >
+                        <Edit3 className="w-4 h-4 text-amber-400" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm('دڵنیای لە سڕینەوەی ئەم نازناوە؟')) {
+                            deleteAward(award.id);
+                          }
+                        }}
+                        className="p-1.5 text-red-400 hover:text-red-300 transition-colors"
+                        title={t('delete')}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}
