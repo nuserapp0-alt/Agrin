@@ -141,68 +141,77 @@ export const NewsTab: React.FC = () => {
         </div>
       )}
 
-      {/* News Detail Modal with Gmail Share */}
+      {/* News Detail Modal */}
       {selectedNewsItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className={`w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border p-6 sm:p-8 shadow-2xl ${
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+          <div className={`w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-3xl border shadow-2xl p-6 sm:p-10 ${
             theme === 'dark' ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-900'
           }`}>
-            <div className="flex items-center justify-between mb-4">
-              <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-bold">
-                {selectedNewsItem.category}
+            {/* Top Bar */}
+            <div className="flex items-center justify-between mb-6">
+              <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-black tracking-wider uppercase shadow-md">
+                {selectedNewsItem.category || 'هەواڵ'}
               </span>
               <button
                 onClick={() => setSelectedNewsItem(null)}
-                className={`p-2 rounded-full border ${theme === 'dark' ? 'bg-slate-800 border-slate-700 text-slate-300' : 'bg-slate-100 border-slate-200 text-slate-700'}`}
+                className={`p-2.5 rounded-full border transition-all ${theme === 'dark' ? 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white' : 'bg-slate-100 border-slate-200 text-slate-700 hover:text-slate-900'}`}
               >
                 ✕
               </button>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-extrabold mb-4 leading-tight">
+            {/* Title */}
+            <h2 className="text-2xl sm:text-3xl font-extrabold mb-4 leading-tight tracking-tight">
               {selectedNewsItem.title[language] || selectedNewsItem.title['en']}
             </h2>
 
-            <div className={`flex items-center gap-4 text-xs mb-6 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-emerald-500" />
+            {/* Metadata (Date & Author) */}
+            <div className={`flex items-center gap-6 text-xs font-semibold mb-6 pb-6 border-b ${theme === 'dark' ? 'border-slate-800 text-slate-400' : 'border-slate-100 text-slate-500'}`}>
+              <div className="flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-emerald-500" />
                 <span>{selectedNewsItem.date} {selectedNewsItem.time}</span>
               </div>
-              <div className="flex items-center gap-1">
-                <User className="w-3.5 h-3.5 text-emerald-500" />
-                <span>{selectedNewsItem.author}</span>
+              <div className="flex items-center gap-1.5">
+                <User className="w-4 h-4 text-emerald-500" />
+                <span>{selectedNewsItem.author || 'بەڕێوەبەر'}</span>
               </div>
             </div>
 
-            <div className="rounded-2xl overflow-hidden mb-6 max-h-80 bg-slate-800">
-              <img 
-                src={selectedNewsItem.imageUrl} 
-                alt="" 
-                className="w-full h-full object-cover"
-              />
+            {/* Image */}
+            {selectedNewsItem.imageUrl && (
+              <div className="relative w-full h-72 sm:h-96 rounded-2xl overflow-hidden mb-8 shadow-xl bg-slate-950">
+                <img 
+                  src={selectedNewsItem.imageUrl} 
+                  alt="" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Summary / Lead */}
+            {selectedNewsItem.summary && (
+              <div className={`p-5 rounded-2xl mb-6 font-semibold text-sm sm:text-base border ${
+                theme === 'dark' ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300' : 'bg-emerald-50 border-emerald-200 text-emerald-900'
+              }`}>
+                {selectedNewsItem.summary[language] || selectedNewsItem.summary['en']}
+              </div>
+            )}
+
+            {/* Content */}
+            <div className={`text-base sm:text-lg leading-relaxed space-y-4 mb-8 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+              <p className="whitespace-pre-line">{selectedNewsItem.content[language] || selectedNewsItem.content['en']}</p>
             </div>
 
-            <div className={`text-sm sm:text-base leading-relaxed space-y-4 mb-6 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
-              <p>{selectedNewsItem.content[language] || selectedNewsItem.content['en']}</p>
-            </div>
-
-            {/* Gmail Share & Close Actions */}
-            <div className="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
-              <a
-                href={`https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=${encodeURIComponent(selectedNewsItem.title[language] || selectedNewsItem.title['en'])}&body=${encodeURIComponent(selectedNewsItem.content[language] || selectedNewsItem.content['en'])}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600/10 hover:bg-red-600/20 text-red-400 border border-red-500/30 text-xs font-bold transition-all"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Share via Gmail</span>
-              </a>
-
+            {/* Footer Close */}
+            <div className={`pt-6 border-t flex items-center justify-end ${theme === 'dark' ? 'border-slate-800' : 'border-slate-200'}`}>
               <button
                 onClick={() => setSelectedNewsItem(null)}
-                className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all"
+                className="px-8 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-extrabold shadow-lg shadow-emerald-600/30 transition-all"
               >
-                {t('close')}
+                {t('close') || 'داخستن'}
               </button>
             </div>
           </div>

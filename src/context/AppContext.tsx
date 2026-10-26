@@ -151,22 +151,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const unsubNews = onSnapshot(collection(db, 'news'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as NewsItem[];
-      setNews(items);
+      setNews(Array.from(new Map(items.map(i => [i.id, i])).values()));
     }, (err) => console.log('Firestore news sync error:', err));
 
     const unsubMatches = onSnapshot(collection(db, 'matches'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as MatchItem[];
-      setMatches(items);
+      setMatches(Array.from(new Map(items.map(i => [i.id, i])).values()));
     }, (err) => console.log('Firestore matches sync error:', err));
 
     const unsubPlayers = onSnapshot(collection(db, 'players'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as PlayerItem[];
-      setPlayers(items);
+      setPlayers(Array.from(new Map(items.map(i => [i.id, i])).values()));
     }, (err) => console.log('Firestore players sync error:', err));
 
     const unsubAwards = onSnapshot(collection(db, 'awards'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AwardItem[];
-      setAwards(items);
+      setAwards(Array.from(new Map(items.map(i => [i.id, i])).values()));
     }, (err) => console.log('Firestore awards sync error:', err));
 
     const unsubSettings = onSnapshot(doc(db, 'settings', 'config'), (docSnap) => {
