@@ -159,7 +159,7 @@ export const AdminModal: React.FC = () => {
           ar: newsContentKu,
           ku: newsContentKu,
         },
-        imageUrl: newsImageUrl || 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+        imageUrl: newsImageUrl,
         date: new Date().toISOString().split('T')[0],
         time: '12:00',
         author: newsAuthor,
@@ -174,9 +174,9 @@ export const AdminModal: React.FC = () => {
     } else if (contentType === 'match') {
       const payload = {
         homeTeam,
-        homeLogo: homeLogo || 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=100&q=80',
+        homeLogo,
         awayTeam,
-        awayLogo: awayLogo || 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=100&q=80',
+        awayLogo,
         homeScore,
         awayScore,
         status: matchStatus,
@@ -199,7 +199,7 @@ export const AdminModal: React.FC = () => {
         position: playerPosition,
         number: Number(playerNumber),
         nationality: playerNationality,
-        imageUrl: playerImageUrl || 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=80',
+        imageUrl: playerImageUrl,
         stats: {
           appearances: Number(playerAppearances),
           goals: Number(playerGoals),
@@ -227,7 +227,7 @@ export const AdminModal: React.FC = () => {
           ar: awardDescKu,
           ku: awardDescKu,
         },
-        imageUrl: awardImageUrl || 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80',
+        imageUrl: awardImageUrl,
         date: new Date().toISOString().split('T')[0],
       };
 
