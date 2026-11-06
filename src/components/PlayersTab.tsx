@@ -119,15 +119,19 @@ export const PlayersTab: React.FC = () => {
                       )}
 
                       <div className="flex items-center gap-4 mb-4">
-                        <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-slate-800 flex-shrink-0 border border-slate-700">
-                          <img
-                            src={player.imageUrl}
-                            alt={player.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
+                        <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-slate-800 flex-shrink-0 border border-slate-700 flex items-center justify-center">
+                          {player.imageUrl ? (
+                            <img
+                              src={player.imageUrl}
+                              alt={player.name}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <Users className="w-6 h-6 text-slate-500 opacity-60" />
+                          )}
                           <div className="absolute bottom-0 inset-x-0 bg-black/60 backdrop-blur-xs text-center text-[10px] font-extrabold text-white py-0.5">
                             #{player.number}
                           </div>

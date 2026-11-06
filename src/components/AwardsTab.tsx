@@ -93,14 +93,18 @@ export const AwardsTab: React.FC = () => {
                 {/* Trophy Image */}
                 <div className="relative h-52 overflow-hidden bg-gradient-to-tr from-amber-500/20 via-orange-500/10 to-transparent flex items-center justify-center p-6">
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10" />
-                  <img
-                    src={award.imageUrl}
-                    alt={title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
+                  {award.imageUrl ? (
+                    <img
+                      src={award.imageUrl}
+                      alt={title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <Trophy className="w-16 h-16 text-amber-500/40" />
+                  )}
                   <div className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-amber-500/90 text-slate-950 font-black text-xs shadow-lg flex items-center gap-1">
                     <Crown className="w-3.5 h-3.5" />
                     <span>{award.season}</span>

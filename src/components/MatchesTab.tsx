@@ -155,14 +155,18 @@ export const MatchesTab: React.FC = () => {
                     {/* Home Team */}
                     <div className="col-span-3 flex flex-col items-center text-center">
                       <div className="w-16 h-16 rounded-2xl bg-slate-800/50 p-2 border border-slate-700/50 flex items-center justify-center shadow-inner mb-3">
-                        <img 
-                          src={match.homeLogo} 
-                          alt={match.homeTeam} 
-                          className="w-12 h-12 object-contain"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = 'none';
-                          }}
-                        />
+                        {match.homeLogo ? (
+                          <img 
+                            src={match.homeLogo} 
+                            alt={match.homeTeam} 
+                            className="w-12 h-12 object-contain"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <Trophy className="w-6 h-6 text-slate-500 opacity-60" />
+                        )}
                       </div>
                       <span className="font-bold text-sm sm:text-base leading-tight">
                         {match.homeTeam}
@@ -187,14 +191,18 @@ export const MatchesTab: React.FC = () => {
                     {/* Away Team */}
                     <div className="col-span-3 flex flex-col items-center text-center">
                       <div className="w-16 h-16 rounded-2xl bg-slate-800/50 p-2 border border-slate-700/50 flex items-center justify-center shadow-inner mb-3">
-                        <img 
-                          src={match.awayLogo} 
-                          alt={match.awayTeam} 
-                          className="w-12 h-12 object-contain"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = 'none';
-                          }}
-                        />
+                        {match.awayLogo ? (
+                          <img 
+                            src={match.awayLogo} 
+                            alt={match.awayTeam} 
+                            className="w-12 h-12 object-contain"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <Trophy className="w-6 h-6 text-slate-500 opacity-60" />
+                        )}
                       </div>
                       <span className="font-bold text-sm sm:text-base leading-tight">
                         {match.awayTeam}

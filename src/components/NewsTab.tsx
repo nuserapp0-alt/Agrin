@@ -61,15 +61,19 @@ export const NewsTab: React.FC = () => {
                 }`}
               >
                 {/* Image & Category */}
-                <div className="relative h-48 overflow-hidden bg-slate-800">
-                  <img
-                    src={item.imageUrl}
-                    alt={title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
+                <div className="relative h-48 overflow-hidden bg-gradient-to-tr from-slate-800 to-slate-900 flex items-center justify-center">
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <Newspaper className="w-12 h-12 text-slate-600 opacity-50" />
+                  )}
                   <div className="absolute top-3 left-3">
                     <span className="px-3 py-1 rounded-full bg-emerald-600/90 backdrop-blur-md text-white text-xs font-extrabold shadow-md">
                       {item.category}

@@ -275,11 +275,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newItem: NewsItem = { ...item, id: 'news-' + Date.now() };
     try {
       await setDoc(doc(db, 'news', newItem.id), newItem);
-      setNews(prev => {
-        const next = [newItem, ...prev];
-        localStorage.setItem('app_news', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Add news error:', e);
       setNews(prev => [newItem, ...prev]);
@@ -289,11 +284,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const updated = { ...item, id };
     try {
       await setDoc(doc(db, 'news', id), updated);
-      setNews(prev => {
-        const next = prev.map(n => n.id === id ? updated : n);
-        localStorage.setItem('app_news', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Update news error:', e);
       setNews(prev => prev.map(n => n.id === id ? updated : n));
@@ -311,11 +301,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newItem: MatchItem = { ...item, id: 'match-' + Date.now() };
     try {
       await setDoc(doc(db, 'matches', newItem.id), newItem);
-      setMatches(prev => {
-        const next = [newItem, ...prev];
-        localStorage.setItem('app_matches', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Add match error:', e);
       setMatches(prev => [newItem, ...prev]);
@@ -325,11 +310,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const updated = { ...item, id };
     try {
       await setDoc(doc(db, 'matches', id), updated);
-      setMatches(prev => {
-        const next = prev.map(m => m.id === id ? updated : m);
-        localStorage.setItem('app_matches', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Update match error:', e);
       setMatches(prev => prev.map(m => m.id === id ? updated : m));
@@ -347,11 +327,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newItem: PlayerItem = { ...item, id: 'player-' + Date.now() };
     try {
       await setDoc(doc(db, 'players', newItem.id), newItem);
-      setPlayers(prev => {
-        const next = [...prev, newItem];
-        localStorage.setItem('app_players', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Add player error:', e);
       setPlayers(prev => [...prev, newItem]);
@@ -361,11 +336,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const updated = { ...item, id };
     try {
       await setDoc(doc(db, 'players', id), updated);
-      setPlayers(prev => {
-        const next = prev.map(p => p.id === id ? updated : p);
-        localStorage.setItem('app_players', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Update player error:', e);
       setPlayers(prev => prev.map(p => p.id === id ? updated : p));
@@ -383,11 +353,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newItem: AwardItem = { ...item, id: 'award-' + Date.now() };
     try {
       await setDoc(doc(db, 'awards', newItem.id), newItem);
-      setAwards(prev => {
-        const next = [newItem, ...prev];
-        localStorage.setItem('app_awards', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Add award error:', e);
       setAwards(prev => [newItem, ...prev]);
@@ -397,11 +362,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const updated = { ...item, id };
     try {
       await setDoc(doc(db, 'awards', id), updated);
-      setAwards(prev => {
-        const next = prev.map(a => a.id === id ? updated : a);
-        localStorage.setItem('app_awards', JSON.stringify(next));
-        return next;
-      });
     } catch(e) {
       console.log('Update award error:', e);
       setAwards(prev => prev.map(a => a.id === id ? updated : a));
