@@ -1,4 +1,18 @@
-export type TabType = 'news' | 'matches' | 'players' | 'awards' | 'settings';
+export type TabType = 'news' | 'internal-matches' | 'matches' | 'players' | 'awards' | 'settings';
+
+export interface InternalMatchItem {
+  id: string;
+  homeTeam: string;
+  homeLogo: string;
+  awayTeam: string;
+  awayLogo: string;
+  homeScore: number;
+  awayScore: number;
+  date: string;
+  time: string;
+  stadium: string;
+  competition: string;
+}
 
 export type LanguageCode = 'en' | 'ar' | 'ku';
 
@@ -43,7 +57,7 @@ export interface PlayerItem {
   name: string;
   nickname?: string; // نازناو
   club: string;
-  position: 'FW' | 'MF' | 'DF' | 'GK' | 'LW' | 'RW' | 'AM' | 'DM' | 'CB' | 'LB' | 'RB';
+  position: 'FW' | 'MF' | 'DF' | 'GK' | 'LW' | 'RW' | 'AM' | 'DM' | 'CB' | 'LB' | 'RB' | 'COACH';
   number: number;
   nationality: string;
   imageUrl: string;

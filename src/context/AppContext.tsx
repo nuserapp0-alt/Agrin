@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { TabType, LanguageCode, ThemeMode, NewsItem, MatchItem, PlayerItem, AwardItem } from '../types';
+import { TabType, LanguageCode, ThemeMode, NewsItem, MatchItem, PlayerItem, AwardItem, InternalMatchItem } from '../types';
 import { initialNews, initialMatches, initialPlayers, initialAwards } from '../data/initialData';
 import { db } from '../firebase';
 import { collection, doc, setDoc, deleteDoc, onSnapshot, getDocs } from 'firebase/firestore';
@@ -16,6 +16,7 @@ interface AppContextType {
   setTheme: (theme: ThemeMode) => void;
   news: NewsItem[];
   matches: MatchItem[];
+  internalMatches: InternalMatchItem[];
   players: PlayerItem[];
   awards: AwardItem[];
   adminEmail: string;
@@ -49,6 +50,9 @@ interface AppContextType {
   addMatch: (item: Omit<MatchItem, 'id'>) => void;
   updateMatch: (id: string, item: Omit<MatchItem, 'id'>) => void;
   deleteMatch: (id: string) => void;
+  addInternalMatch: (item: Omit<InternalMatchItem, 'id'>) => void;
+  updateInternalMatch: (id: string, item: Omit<InternalMatchItem, 'id'>) => void;
+  deleteInternalMatch: (id: string) => void;
   addPlayer: (item: Omit<PlayerItem, 'id'>) => void;
   updatePlayer: (id: string, item: Omit<PlayerItem, 'id'>) => void;
   deletePlayer: (id: string) => void;
@@ -75,6 +79,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [news, setNews] = useState<NewsItem[]>([]);
 
   const [matches, setMatches] = useState<MatchItem[]>([]);
+
+  const [internalMatches, setInternalMatches] = useState<InternalMatchItem[]>([]);
 
   const [players, setPlayers] = useState<PlayerItem[]>([]);
 
@@ -112,6 +118,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setMatches(Array.from(new Map(items.map(i => [i.id, i])).values()));
     }, (err) => console.log('Firestore matches sync error:', err));
 
+    const unsubInternalMatches = onSnapshot(collection(db, 'internal_matches'), (snapshot) => {
+      const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as InternalMatchItem[];
+      setInternalMatches(Array.from(new Map(items.map(i => [i.id, i])).values()));
+    }, (err) => console.log('Firestore internal_matches sync error:', err));
+
     const unsubPlayers = onSnapshot(collection(db, 'players'), (snapshot) => {
       const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as PlayerItem[];
       setPlayers(Array.from(new Map(items.map(i => [i.id, i])).values()));
@@ -131,6 +142,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => {
       unsubNews();
       unsubMatches();
+      unsubInternalMatches();
       unsubPlayers();
       unsubAwards();
       unsubSettings();
@@ -166,6 +178,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem('app_matches', JSON.stringify(matches));
   }, [matches]);
+
+  useEffect(() => {
+    localStorage.setItem('app_internal_matches', JSON.stringify(internalMatches));
+  }, [internalMatches]);
 
   useEffect(() => {
     localStorage.setItem('app_players', JSON.stringify(players));
@@ -322,6 +338,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try { await deleteDoc(doc(db, 'matches', id)); } catch(e) { console.log('Delete match error:', e); }
   };
 
+  // Internal Matches CRUD
+  const addInternalMatch = async (item: Omit<InternalMatchItem, 'id'>) => {
+    const newItem: InternalMatchItem = { ...item, id: 'internal-match-' + Date.now() };
+    try {
+      await setDoc(doc(db, 'internal_matches', newItem.id), newItem);
+    } catch(e) {
+      console.log('Add internal match error:', e);
+      setInternalMatches(prev => [newItem, ...prev]);
+    }
+  };
+  const updateInternalMatch = async (id: string, item: Omit<InternalMatchItem, 'id'>) => {
+    const updated = { ...item, id };
+    try {
+      await setDoc(doc(db, 'internal_matches', id), updated);
+    } catch(e) {
+      console.log('Update internal match error:', e);
+      setInternalMatches(prev => prev.map(m => m.id === id ? updated : m));
+    }
+  };
+  const deleteInternalMatch = async (id: string) => {
+    const updated = internalMatches.filter(m => m.id !== id);
+    setInternalMatches(updated);
+    localStorage.setItem('app_internal_matches', JSON.stringify(updated));
+    try { await deleteDoc(doc(db, 'internal_matches', id)); } catch(e) { console.log('Delete internal match error:', e); }
+  };
+
   // Players CRUD
   const addPlayer = async (item: Omit<PlayerItem, 'id'>) => {
     const newItem: PlayerItem = { ...item, id: 'player-' + Date.now() };
@@ -412,6 +454,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         upcomingMatches: 'Upcoming',
         finishedMatches: 'Finished',
         language: 'Language',
+        internalMatches: 'Internal Matches',
       },
       ar: {
         matches: 'المباريات',
@@ -440,6 +483,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         upcomingMatches: 'قادمة',
         finishedMatches: 'منتهية',
         language: 'اللغة',
+        internalMatches: 'المباريات الداخلية',
       },
       ku: {
         matches: 'یارییەکان',
@@ -468,6 +512,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         upcomingMatches: 'دواتر',
         finishedMatches: 'تەواوبوو',
         language: 'زمان',
+        internalMatches: 'یاری ناوەخۆ',
       }
     };
     return dict[language][key] || dict['en'][key] || key;
@@ -479,7 +524,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       activeTab: currentTab, setActiveTab: setCurrentTab,
       language, setLanguage,
       theme, toggleTheme, setTheme,
-      news, matches, players, awards,
+      news, matches, internalMatches, players, awards,
       adminEmail, setAdminEmail,
       isLoggedInAdmin, setIsLoggedInAdmin,
       isAdmin: isLoggedInAdmin, loginAdmin, logoutAdmin,
@@ -492,6 +537,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       selectedPlayerItem, setSelectedPlayerItem,
       addNews, updateNews, deleteNews,
       addMatch, updateMatch, deleteMatch,
+      addInternalMatch, updateInternalMatch, deleteInternalMatch,
       addPlayer, updatePlayer, deletePlayer,
       addAward, updateAward, deleteAward,
       t

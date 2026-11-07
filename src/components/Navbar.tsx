@@ -10,7 +10,8 @@ import {
   Settings, 
   Moon, 
   Sun, 
-  PlusCircle
+  PlusCircle,
+  Shield
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -31,6 +32,7 @@ export const Navbar: React.FC = () => {
   const tabs: { id: TabType; labelKey: string; icon: React.ReactNode }[] = [
     { id: 'matches', labelKey: 'matches', icon: <CalendarDays className="w-4 h-4" /> },
     { id: 'news', labelKey: 'news', icon: <Newspaper className="w-4 h-4" /> },
+    { id: 'internal-matches', labelKey: 'internalMatches', icon: <Shield className="w-4 h-4" /> },
     { id: 'players', labelKey: 'players', icon: <Users className="w-4 h-4" /> },
     { id: 'awards', labelKey: 'awards', icon: <Trophy className="w-4 h-4" /> },
     { id: 'settings', labelKey: 'settings', icon: <Settings className="w-4 h-4" /> },

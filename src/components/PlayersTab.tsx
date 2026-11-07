@@ -57,8 +57,105 @@ export const PlayersTab: React.FC = () => {
         </div>
       ) : (
         <div className="space-y-10">
+          {/* Coach Section at the Top */}
+          {filteredPlayers.filter(p => p.position === 'COACH').length > 0 && (
+            <div className="space-y-4 mb-8">
+              <div className="flex items-center gap-2 border-b border-amber-500/40 pb-2">
+                <Users className="w-5 h-5 text-amber-400" />
+                <h2 className="text-base sm:text-lg font-extrabold tracking-wide uppercase text-amber-400">
+                  ڕاهێنەری تیپ (HEAD COACH)
+                </h2>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold ml-2">
+                  {filteredPlayers.filter(p => p.position === 'COACH').length}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPlayers.filter(p => p.position === 'COACH').map((player: PlayerItem) => (
+                  <div
+                    key={player.id}
+                    onClick={() => setSelectedPlayerItem(player)}
+                    className={`group relative rounded-2xl border p-5 cursor-pointer transition-all duration-300 hover:-translate-y-1 ${
+                      theme === 'dark'
+                        ? 'bg-gradient-to-br from-amber-950/30 to-slate-900 border-amber-500/30 hover:border-amber-500/60 shadow-xl'
+                        : 'bg-gradient-to-br from-amber-50 to-white border-amber-300 hover:border-amber-400 shadow-md'
+                    }`}
+                  >
+                    {/* Admin Actions */}
+                    {isAdmin && (
+                      <div className="absolute top-4 right-4 z-10 flex items-center gap-1 bg-slate-900/80 backdrop-blur-md p-1.5 rounded-xl border border-slate-700">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openAdminModal('player', player);
+                          }}
+                          className="p-1 text-slate-300 hover:text-white transition-colors"
+                          title={t('edit')}
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm('دڵنیای لە سڕینەوەی ئەم ڕاهێنەرە؟')) {
+                              deletePlayer(player.id);
+                            }
+                          }}
+                          className="p-1 text-red-400 hover:text-red-300 transition-colors"
+                          title={t('delete')}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-4 mb-2">
+                      <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-slate-800 flex-shrink-0 border border-amber-500/40 flex items-center justify-center">
+                        {player.imageUrl ? (
+                          <img
+                            src={player.imageUrl}
+                            alt={player.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <Users className="w-6 h-6 text-amber-400 opacity-80" />
+                        )}
+                        <div className="absolute bottom-0 inset-x-0 bg-amber-600/90 backdrop-blur-xs text-center text-[9px] font-extrabold text-slate-950 py-0.5">
+                          COACH
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className="text-[11px] px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400 font-bold flex items-center gap-1 border border-amber-500/30">
+                            ⭐ ڕاهێنەر (Manager)
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-base group-hover:text-amber-400 transition-colors flex items-center gap-2 flex-wrap">
+                          <span>{player.name}</span>
+                          {player.nickname && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-extrabold border border-amber-500/30">
+                              "{player.nickname}"
+                            </span>
+                          )}
+                        </h3>
+                        <p className={`text-xs ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                          {player.club}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {positionGroups.map(group => {
             const groupPlayers = filteredPlayers.filter(p => {
+              if (p.position === 'COACH') return false;
               if (group.pos === 'FW') return ['FW', 'LW', 'RW'].includes(p.position);
               if (group.pos === 'MF') return ['MF', 'AM', 'DM'].includes(p.position);
               if (group.pos === 'DF') return ['DF', 'CB', 'LB', 'RB'].includes(p.position);

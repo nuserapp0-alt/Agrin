@@ -11,6 +11,7 @@ import { NewsTab } from './components/NewsTab';
 import { PlayersTab } from './components/PlayersTab';
 import { AwardsTab } from './components/AwardsTab';
 import { SettingsTab } from './components/SettingsTab';
+import { InternalMatchesTab } from './components/InternalMatchesTab';
 import { SplashScreen } from './components/SplashScreen';
 import { AdminModal } from './components/AdminModal';
 
@@ -29,6 +30,7 @@ const AppContent: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20">
         {currentTab === 'matches' && <MatchesTab />}
         {currentTab === 'news' && <NewsTab />}
+        {currentTab === 'internal-matches' && <InternalMatchesTab />}
         {currentTab === 'players' && <PlayersTab />}
         {currentTab === 'awards' && <AwardsTab />}
         {currentTab === 'settings' && <SettingsTab />}

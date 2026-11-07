@@ -12,6 +12,8 @@ export const AdminModal: React.FC = () => {
     updateNews, 
     addMatch, 
     updateMatch, 
+    addInternalMatch,
+    updateInternalMatch,
     addPlayer, 
     updatePlayer, 
     addAward,
@@ -24,7 +26,7 @@ export const AdminModal: React.FC = () => {
     logoUrl
   } = useApp();
 
-  const [contentType, setContentType] = useState<'news' | 'match' | 'player' | 'award'>('news');
+  const [contentType, setContentType] = useState<'news' | 'match' | 'internal-match' | 'player' | 'award'>('news');
 
   const newsFileRef = useRef<HTMLInputElement>(null);
   const homeLogoRef = useRef<HTMLInputElement>(null);
@@ -72,7 +74,7 @@ export const AdminModal: React.FC = () => {
   const [playerName, setPlayerName] = useState('');
   const [playerNickname, setPlayerNickname] = useState('');
   const [playerClub, setPlayerClub] = useState('Real Madrid');
-  const [playerPosition, setPlayerPosition] = useState<'FW' | 'MF' | 'DF' | 'GK'>('FW');
+  const [playerPosition, setPlayerPosition] = useState<'FW' | 'MF' | 'DF' | 'GK' | 'COACH'>('FW');
   const [playerNumber, setPlayerNumber] = useState(10);
   const [playerNationality, setPlayerNationality] = useState('Brazil');
   const [playerImageUrl, setPlayerImageUrl] = useState('');
@@ -109,6 +111,18 @@ export const AdminModal: React.FC = () => {
         setHomeScore(editingItem.homeScore ?? 0);
         setAwayScore(editingItem.awayScore ?? 0);
         setMatchStatus(editingItem.status || 'UPCOMING');
+        setMatchDate(editingItem.date || '2026-10-15');
+        setMatchTime(editingItem.time || '21:00');
+        setStadium(editingItem.stadium || '');
+        setCompetition(editingItem.competition || '');
+      } else if (editingItem.type === 'internal-match') {
+        setContentType('internal-match');
+        setHomeTeam(editingItem.homeTeam || 'لاوانی ئاگرین');
+        setHomeLogo(editingItem.homeLogo || logoUrl || '/club-logo.png?v=7');
+        setAwayTeam(editingItem.awayTeam || '');
+        setAwayLogo(editingItem.awayLogo || '');
+        setHomeScore(editingItem.homeScore ?? 0);
+        setAwayScore(editingItem.awayScore ?? 0);
         setMatchDate(editingItem.date || '2026-10-15');
         setMatchTime(editingItem.time || '21:00');
         setStadium(editingItem.stadium || '');
@@ -190,6 +204,25 @@ export const AdminModal: React.FC = () => {
         updateMatch(editingItem.id, payload);
       } else {
         addMatch(payload);
+      }
+    } else if (contentType === 'internal-match') {
+      const payload = {
+        homeTeam,
+        homeLogo,
+        awayTeam,
+        awayLogo,
+        homeScore,
+        awayScore,
+        date: matchDate,
+        time: matchTime,
+        stadium,
+        competition,
+      };
+
+      if (editingItem && editingItem.id) {
+        updateInternalMatch(editingItem.id, payload);
+      } else {
+        addInternalMatch(payload);
       }
     } else if (contentType === 'player') {
       const payload = {
@@ -292,7 +325,7 @@ export const AdminModal: React.FC = () => {
           ) : (
             <>
               {/* Type Switcher */}
-              <div className="grid grid-cols-4 gap-2 bg-zinc-950/60 p-1.5 rounded-2xl border border-zinc-800">
+              <div className="grid grid-cols-5 gap-2 bg-zinc-950/60 p-1.5 rounded-2xl border border-zinc-800">
                 <button
                   type="button"
                   onClick={() => setContentType('news')}
@@ -306,6 +339,13 @@ export const AdminModal: React.FC = () => {
                   className={`py-2.5 rounded-xl text-xs font-bold transition-all ${contentType === 'match' ? 'bg-amber-500 text-slate-950 shadow' : 'text-zinc-400 hover:text-white'}`}
                 >
                   یاری
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setContentType('internal-match')}
+                  className={`py-2.5 rounded-xl text-xs font-bold transition-all ${contentType === 'internal-match' ? 'bg-amber-500 text-slate-950 shadow' : 'text-zinc-400 hover:text-white'}`}
+                >
+                  یاری ناوەخۆ
                 </button>
                 <button
                   type="button"
@@ -548,6 +588,132 @@ export const AdminModal: React.FC = () => {
                   </>
                 )}
 
+                {/* INTERNAL MATCH FORM */}
+                {contentType === 'internal-match' && (
+                  <>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-semibold text-zinc-300">جۆری خول یان یاریی ناوەخۆ (Competition / Internal Match)</label>
+                      <input
+                        type="text"
+                        required
+                        value={competition}
+                        onChange={(e) => setCompetition(e.target.value)}
+                        placeholder="خولی ناوەخۆیی / جامی یانە"
+                        className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">ناوی تیمی ماڵەوە (Home Team)</label>
+                        <input
+                          type="text"
+                          required
+                          value={homeTeam}
+                          onChange={(e) => setHomeTeam(e.target.value)}
+                          placeholder="لاوانی ئاگرین"
+                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">ناوی تیمی میوان (Away Team)</label>
+                        <input
+                          type="text"
+                          required
+                          value={awayTeam}
+                          onChange={(e) => setAwayTeam(e.target.value)}
+                          placeholder="تیمی بەرامبەر"
+                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">لۆگۆی تیمی ماڵەوە (کلیک بۆ ئەپلۆد)</label>
+                        <div 
+                          onClick={() => homeLogoRef.current?.click()}
+                          className="w-full h-20 border-2 border-dashed border-zinc-700 hover:border-amber-500 rounded-2xl bg-zinc-950/60 flex items-center justify-center gap-3 cursor-pointer overflow-hidden transition-colors p-2"
+                        >
+                          {homeLogo ? (
+                            <img src={homeLogo} alt="Home Logo" className="w-12 h-12 object-cover rounded-xl" />
+                          ) : (
+                            <Upload className="w-5 h-5 text-amber-500" />
+                          )}
+                          <span className="text-xs text-zinc-400">لۆگۆی ماڵەوە</span>
+                        </div>
+                        <input ref={homeLogoRef} type="file" accept="image/*" onChange={handleFileChange(setHomeLogo)} className="hidden" />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">لۆگۆی تیمی میوان (کلیک بۆ ئەپلۆد)</label>
+                        <div 
+                          onClick={() => awayLogoRef.current?.click()}
+                          className="w-full h-20 border-2 border-dashed border-zinc-700 hover:border-amber-500 rounded-2xl bg-zinc-950/60 flex items-center justify-center gap-3 cursor-pointer overflow-hidden transition-colors p-2"
+                        >
+                          {awayLogo ? (
+                            <img src={awayLogo} alt="Away Logo" className="w-12 h-12 object-cover rounded-xl" />
+                          ) : (
+                            <Upload className="w-5 h-5 text-amber-500" />
+                          )}
+                          <span className="text-xs text-zinc-400">لۆگۆی میوان</span>
+                        </div>
+                        <input ref={awayLogoRef} type="file" accept="image/*" onChange={handleFileChange(setAwayLogo)} className="hidden" />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">گۆڵی ماڵەوە</label>
+                        <input
+                          type="number"
+                          value={homeScore}
+                          onChange={(e) => setHomeScore(Number(e.target.value))}
+                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">گۆڵی میوان</label>
+                        <input
+                          type="number"
+                          value={awayScore}
+                          onChange={(e) => setAwayScore(Number(e.target.value))}
+                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">بەروار (Date)</label>
+                        <input
+                          type="date"
+                          value={matchDate}
+                          onChange={(e) => setMatchDate(e.target.value)}
+                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">کات (Time)</label>
+                        <input
+                          type="text"
+                          value={matchTime}
+                          onChange={(e) => setMatchTime(e.target.value)}
+                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-semibold text-zinc-300">یاریگا (Stadium)</label>
+                        <input
+                          type="text"
+                          value={stadium}
+                          onChange={(e) => setStadium(e.target.value)}
+                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
                 {/* 3. PLAYER FORM */}
                 {contentType === 'player' && (
                   <>
@@ -583,21 +749,24 @@ export const AdminModal: React.FC = () => {
                           onChange={(e: any) => setPlayerPosition(e.target.value)}
                           className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
                         >
+                          <option value="COACH">ڕاهێنەر (Head Coach)</option>
                           <option value="FW">هێرشبەر (FW)</option>
                           <option value="MF">ناوەڕاست (MF)</option>
                           <option value="DF">بەرگریکار (DF)</option>
                           <option value="GK">گۆڵچی (GK)</option>
                         </select>
                       </div>
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-semibold text-zinc-300">ژمارەی درێس (Number)</label>
-                        <input
-                          type="number"
-                          value={playerNumber}
-                          onChange={(e) => setPlayerNumber(Number(e.target.value))}
-                          className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
-                        />
-                      </div>
+                      {playerPosition !== 'COACH' && (
+                        <div className="space-y-1.5">
+                          <label className="text-xs font-semibold text-zinc-300">ژمارەی درێس (Number)</label>
+                          <input
+                            type="number"
+                            value={playerNumber}
+                            onChange={(e) => setPlayerNumber(Number(e.target.value))}
+                            className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-sm focus:outline-none focus:border-amber-500"
+                          />
+                        </div>
+                      )}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -622,45 +791,47 @@ export const AdminModal: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-2">
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-semibold text-zinc-300">یارییەکان</label>
-                        <input
-                          type="number"
-                          value={playerAppearances}
-                          onChange={(e) => setPlayerAppearances(Number(e.target.value))}
-                          className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
-                        />
+                    {playerPosition !== 'COACH' && (
+                      <div className="grid grid-cols-4 gap-2">
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-semibold text-zinc-300">یارییەکان</label>
+                          <input
+                            type="number"
+                            value={playerAppearances}
+                            onChange={(e) => setPlayerAppearances(Number(e.target.value))}
+                            className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-semibold text-zinc-300">گۆڵ</label>
+                          <input
+                            type="number"
+                            value={playerGoals}
+                            onChange={(e) => setPlayerGoals(Number(e.target.value))}
+                            className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-semibold text-zinc-300">أصيست</label>
+                          <input
+                            type="number"
+                            value={playerAssists}
+                            onChange={(e) => setPlayerAssists(Number(e.target.value))}
+                            className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-semibold text-zinc-300">ڕەیتینگ</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            value={playerRating}
+                            onChange={(e) => setPlayerRating(Number(e.target.value))}
+                            className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
+                          />
+                        </div>
                       </div>
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-semibold text-zinc-300">گۆڵ</label>
-                        <input
-                          type="number"
-                          value={playerGoals}
-                          onChange={(e) => setPlayerGoals(Number(e.target.value))}
-                          className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-semibold text-zinc-300">أصيست</label>
-                        <input
-                          type="number"
-                          value={playerAssists}
-                          onChange={(e) => setPlayerAssists(Number(e.target.value))}
-                          className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-semibold text-zinc-300">ڕەیتینگ</label>
-                        <input
-                          type="number"
-                          step="0.1"
-                          value={playerRating}
-                          onChange={(e) => setPlayerRating(Number(e.target.value))}
-                          className="w-full px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-white text-xs"
-                        />
-                      </div>
-                    </div>
+                    )}
 
                     <div className="space-y-1.5">
                       <label className="text-xs font-semibold text-zinc-300">وێنەی یاریزان (کلیک بکە بۆ ئەپلۆد کردن)</label>
